@@ -8,7 +8,7 @@ import ru.rencredit.utils.DriverManager;
 
 public abstract class BasePage {
 
-    protected WebDriverWait wait  = new WebDriverWait(DriverManager.getDriver(), 30);
+    public WebDriverWait wait  = new WebDriverWait(DriverManager.getDriver(), 30);
 
     public BasePage() {
         PageFactory.initElements(DriverManager.getDriver(), this);

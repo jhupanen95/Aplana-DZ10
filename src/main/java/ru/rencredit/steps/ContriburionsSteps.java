@@ -4,7 +4,10 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.qameta.allure.Step;
 import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.rencredit.pages.ContributionsPage;
+import ru.rencredit.utils.DriverManager;
 
 import java.util.Map;
 
@@ -39,25 +42,24 @@ public class ContriburionsSteps {
 
     @Step("значение \"{0}\" равно \"{1}\"")
     public void checkFieldStep (String field, String value) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         ContributionsPage page = new ContributionsPage();
-
+        String errorMessage = "Поле \"" + field + "\", Ожидаемое значение \"" + value + "\", Полученное значение \"";
         switch (field) {
             case "Ставка":
-                Assert.assertTrue(page.getField(page.rate).equals(value));
+                page.wait.until(ExpectedConditions.textToBePresentInElement(page.rate, value));
+                Assert.assertTrue(errorMessage + page.getField(page.rate) + "\"", page.getField(page.rate).equals(value));
                 break;
             case "К снятию":
-                Assert.assertTrue(page.getField(page.resultAfterPeriod).equals(value));
+                page.wait.until(ExpectedConditions.textToBePresentInElement(page.resultAfterPeriod, value));
+                Assert.assertTrue(errorMessage + page.getField(page.resultAfterPeriod) + "\"", page.getField(page.resultAfterPeriod).equals(value));
                 break;
             case "Начисленно":
-                Assert.assertTrue(page.getField(page.earned).equals(value));
+                page.wait.until(ExpectedConditions.textToBePresentInElement(page.earned, value));
+                Assert.assertTrue(errorMessage + page.getField(page.earned) + "\"", page.getField(page.earned).equals(value));
                 break;
             case "Пополнение":
-                Assert.assertTrue(page.getField(page.replenishOnPeriod).equals(value));
+                page.wait.until(ExpectedConditions.textToBePresentInElement(page.replenishOnPeriod, value));
+                Assert.assertTrue(errorMessage + page.getField(page.replenishOnPeriod) + "\"", page.getField(page.replenishOnPeriod).equals(value));
                 break;
             default:
                 Assert.fail("Не найден элемент - " + field);
@@ -85,11 +87,7 @@ public class ContriburionsSteps {
     public void fillFieldsStep(Map<String,String> fields) {
         fields.forEach(
                 (k, v) -> {
-                    try {
-                        fillFieldStep(k, v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    fillFieldStep(k, v);
                 }
         );
     }
@@ -98,11 +96,7 @@ public class ContriburionsSteps {
     public void checkBoxesStep(Map<String,String> fields) {
         fields.forEach(
                 (k, v) -> {
-                    try {
-                        checkBoxClickerStep(k, v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    checkBoxClickerStep(k, v);
                 }
         );
     }
@@ -111,11 +105,7 @@ public class ContriburionsSteps {
     public void checkfillFieldsStep(Map<String,String> fields) {
         fields.forEach(
                 (k, v) -> {
-                    try {
-                        checkFieldStep(k, v);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    checkFieldStep(k, v);
                 }
         );
     }
